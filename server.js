@@ -23,8 +23,17 @@ app.get('/', (request, response) => {
   response.sendFile('./public/index.html')
 });
 
-app.get('/urls', (request, response) => {
+app.get('/api/urls', (request, response) => {
   response.send({ urls: app.locals.urls })
+})
+
+app.post('/api/urls', (request, response) => {
+  console.log(request.body, request.params)
+  const id = Date.now();
+  const { url } = request.body;
+  url.id = url.id || Date.now()
+  app.locals.urls.push(url)
+  response.status(201).send({ url })
 })
 
 app.listen(app.get('port'), () => {
