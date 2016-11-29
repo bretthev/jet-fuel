@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const dbName = 'jetFuelDB';
+const connectionString = 'mongodb://localhost:27017/' + dbName;
+
+mongoose.connect(connectionString);
 
 
 app.use(bodyParser.json());
@@ -8,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.set('port', process.env.PORT || 3001);
 app.locals.title = 'Jet Fuel';
+
 
 app.locals.urls = [{
   title: 'Google',
