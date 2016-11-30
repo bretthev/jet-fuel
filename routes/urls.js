@@ -8,13 +8,15 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.locals.urls = [{
-  title: 'google',
-  url: 'www.google.com'
-}]
+app.locals.urls = []
 
 router.get('/', (request, response) => {
-  response.send( app.locals.urls )
+  response.send( {urls: app.locals.urls})
+})
+
+router.post('/', (request, response) => {
+  app.locals.urls.push({id: Date.now(), title: request.body.title, url: request.body.url})
+  response.status(201).send({ url })
 })
 
 
