@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   postUrls(title, url) {
-    axios.post('/urls',  {id: Date.now(), title: title, url: url, counter: 0})
+    axios.post('/urls',  {title: title, url: url})
     .then((response) => {
       console.log('response received, hooray!')
     })
@@ -42,19 +42,24 @@ class App extends Component {
     this.getUrls();
   }
 
-  // clickCounterUpdate(shortUrl, counter) {
-  //   axios.patch(`/urls/:${shortUrl}`, {counter: ++counter})
-  //   .then((response) => {
-  //     console.log('response received, hooray!')
-  //   })
-  //   .catch(() => {
-  //     console.log('Invalid request')
-  //   })
-  // }
 
   displayUrls() {
     const { urls } = this.state;
-    return urls.urls.map((url) => <li key={url.id}><h1>{url.counter}</h1>{url.title} <span>{url.shortUrl}</span></li> )
+    return urls.urls.map((url) =>{
+      const shortenedLink = "http://localhost:3001/urls/" + url.shortUrl
+      console.log(shortenedLink)
+      return (
+        <li key={url.id}>
+          <h1>{url.title}</h1>
+          <a href={shortenedLink}>
+            {url.shortUrl}
+          </a>
+          {url.counter}
+          {url.dateAdded}
+        </li>
+        )
+      }
+    )
   }
 
   render() {

@@ -19,19 +19,18 @@ router.get('/:shortUrl', (request, response) => {
   let targetUrl = app.locals.urls.filter((url) => url.shortUrl===request.params.shortUrl)[0]
 
   if (!targetUrl) { response.send(`Please go away to somewhere that exists and never come back here.`)}
-
+  ++targetUrl.counter
   response.redirect( targetUrl.longUrl )
 })
 
-router.patch(`/:shortUrl`, (request, response) {
-  let targetUrl = app.locals.urls.map((url, i) => url.id===request.params.id)
-  console.log(targetUrl)
-})
+
 
 router.post('/', (request, response) => {
   const longUrl = request.body.url;
+  let dateString = Date.now().toString()
+  const urlId = crc.crc24(dateString).toString(16)
   const shortUrl = crc.crc24(longUrl).toString(16)
-  app.locals.urls.push({id: request.body.id, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl, counter: request.body.counter })
+  app.locals.urls.push({id: urlId, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl, counter: 0, dateAdded: new Date().toDateString() })
   console.log(app.locals.urls)
   response.status(201).send('Post received')
 })
