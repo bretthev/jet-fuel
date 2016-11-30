@@ -5,27 +5,33 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      inputValue: null,
-      testState: null
+      titleInput: null,
+      urlInput: null,
+      urls: null
     }
   }
 
-  getInput(e) {
+  getTitleInput(e) {
     e.preventDefault();
-    this.setState({ inputValue: e.target.value })
+    this.setState({ titleInput: e.target.value })
+  }
+
+  getUrlInput(e) {
+    e.preventDefault();
+    this.setState({ urlInput: e.target.value })
   }
 
   getUrls() {
-    axios.get('/api/urls', {})
+    axios.get('/urls', {})
     .then((response) => {
-      console.log(response.data.urls)
+      this.setState({ urls: response.data })
     })
   }
 
-  postUrls(url) {
-    axios.post('/api/urls',  {id: Date.now(), url: url})
+  postUrls(title, url) {
+    axios.post('/urls',  {id: Date.now(), title: title, url: url})
     .then((response) => {
-      console.log(response)
+      console.log('response received, hooray!')
     })
     .catch(() => {
       console.log('Invalid request')
@@ -36,18 +42,25 @@ class App extends Component {
     this.getUrls();
   }
 
+  displayUrls() {
+    const { urls } = this.state;
+    return urls.urls.map((url) => <li key={url.id}>{url.title}, {url.url}</li> )
+  }
+
   render() {
+    const { urls, urlInput, titleInput } = this.state;
     return (
       <div className="App">
-        <form className="url-form" onSubmit={(e) => this.postUrls(this.state.inputValue)}>
-          <input className="url-input" onChange={e => this.getInput(e)}/>
+        <form className="url-form" onSubmit={(e) => this.postUrls(titleInput, urlInput)}>
+          <input className="url-input" onChange={e => this.getTitleInput(e)}/>
+          <input className="url-input" onChange={e => this.getUrlInput(e)}/>
           <button className="url-submit-button">
             submit
           </button>
         </form>
-        <section className="url-list">
-
-        </section>
+        <ul className="url-list">
+        { urls ? this.displayUrls() : null}
+        </ul>
       </div>
     );
   }
