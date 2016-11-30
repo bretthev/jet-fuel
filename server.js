@@ -14,7 +14,7 @@ mongoose.connect(connectionString);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/urls', urls)
+app.use('/urls', urls);
 app.set('port', process.env.PORT || 3001);
 app.locals.title = 'Jet Fuel';
 

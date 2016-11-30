@@ -1,6 +1,7 @@
 const Url = require('../models/Urls');
 const express = require('express');
 const router = express.Router();
+const crc = require('crc');
 
 const bodyParser = require('body-parser');
 const app = express();
@@ -14,8 +15,11 @@ router.get('/', (request, response) => {
   response.send( {urls: app.locals.urls})
 })
 
-router.post('/', (request, response) => {
-  app.locals.urls.push({id: Date.now(), title: request.body.title, url: request.body.url})
+router.post('/shortenUrl', (request, response) => {
+  const longUrl = request.body.url;
+  const shortUrl = crc.crc24(longUrl).toString(16)
+  app.locals.urls.push({id: request.body.id, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl })
+  console.log(app.locals.urls)
   response.status(201).send({ url })
 })
 

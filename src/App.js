@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   postUrls(title, url) {
-    axios.post('/urls',  {id: Date.now(), title: title, url: url})
+    axios.post('/urls/shortenUrl',  {id: Date.now(), title: title, url: url})
     .then((response) => {
       console.log('response received, hooray!')
     })
@@ -44,7 +44,7 @@ class App extends Component {
 
   displayUrls() {
     const { urls } = this.state;
-    return urls.urls.map((url) => <li key={url.id}>{url.title}, {url.url}</li> )
+    return urls.urls.map((url) => <li key={url.id}>{url.title} <a href={url.longUrl}>{url.shortUrl}</a></li> )
   }
 
   render() {
