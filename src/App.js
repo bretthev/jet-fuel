@@ -7,7 +7,9 @@ class App extends Component {
     this.state = {
       titleInput: null,
       urlInput: null,
-      urls: null
+      urls: null,
+      hasBeenSortedByDate: false,
+      hasBeenSortedByClicks: false
     }
   }
 
@@ -24,7 +26,7 @@ class App extends Component {
   getUrls() {
     axios.get('/urls', {})
     .then((response) => {
-      this.setState({ urls: response.data })
+      this.setState({ urls: response.data.urls })
     })
   }
 
@@ -45,7 +47,7 @@ class App extends Component {
 
   displayUrls() {
     const { urls } = this.state;
-    return urls.urls.map((url) =>{
+    return urls.map((url) =>{
       const shortenedLink = "http://localhost:3001/urls/" + url.shortUrl
       console.log(shortenedLink)
       return (
@@ -62,6 +64,22 @@ class App extends Component {
     )
   }
 
+  sortByDate() {
+    const { urls } = this.state
+    if (this.state.hasBeenSortedByDate) { return this.setState({ urls: urls.reverse() }) }
+    else {
+      this.setState({ urls: urls.sort((a,b) => a.unix - b.unix), hasBeenSortedByDate: true})
+    }
+  }
+
+  sortByClick() {
+    const { urls}  = this.state
+    if (this.state.hasBeenSortedByClicks) { return this.setState({ urls: urls.reverse() }) }
+    else {
+      this.setState({ urls: urls.sort((a,b) => b.counter - a.counter), hasBeenSortedByClicks: true})
+    }
+  }
+
   render() {
     const { urls, urlInput, titleInput } = this.state;
     return (
@@ -74,6 +92,10 @@ class App extends Component {
           </button>
         </form>
         <ul className="url-list">
+        <section className="sort-button-container">
+          <button className="sort-by-clicks" onClick={e=> this.sortByClick()}>Sort by clicks</button>
+          <button className="sort-by-date"  onClick={e=> this.sortByDate()}>Sort by date</button>
+        </section>
         { urls ? this.displayUrls() : null}
         </ul>
       </div>
