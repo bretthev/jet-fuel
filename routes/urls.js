@@ -30,7 +30,7 @@ router.post('/', (request, response) => {
   let dateString = Date.now().toString()
   const urlId = crc.crc24(dateString).toString(16)
   const shortUrl = crc.crc24(longUrl).toString(16)
-  app.locals.urls.push({id: urlId, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl, counter: 0, dateAdded: new Date().toDateString() })
+  app.locals.urls.push({id: urlId, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl, counter: 0, dateAdded: new Date().toDateString(), unix: Date.now() })
   console.log(app.locals.urls)
   response.status(201).send('Post received')
 })
