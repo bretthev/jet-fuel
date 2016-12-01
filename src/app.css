@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css?family=Lekton|Oswald');
+
+html, body, #root, .App {
+  height: 100%;
+  width: 100%;
+  background-color: #34495e;
+}
+
+.app-title {
+  font-family: 'Lekton', sans-serif;
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  margin-top: 75px;
+}
+
+.input {
+  margin: auto;
+  width: 200px;
+  height: 30px;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 5px;
+  display: block;
+  font-family: 'Lekton', sans-serif;
+  border: none;
+  outline: none;
+  transition: .25s;
+}
+
+.url-submit-button:hover {
+  background-color: #f1c40f;
+}
+
+.sort-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 0 0;
+}
+
+.search-filter {
+  display: block;
+  width: 150px;
+  font-size: 20px;
+  margin-left: 5px;
+  font-family: 'Lekton', sans-serif;
+  text-align: center;
+  transition: .5s;
+}
+
+
+.sort-button {
+  font-family: 'Lekton', sans-serif;
+  width: 75px;
+  padding-top: 3px;
+  height: 35px;
+  font-size: 15px;
+  margin: 0 5px 0;
+  transition: .5s;
+}
+
+.sort-button:hover {
+  outline: none;
+  border: none;
+  background-color: #f1c40f;
+}
+
+
+.sort-button:disabled {
+  display: none;
+}
+
+.search-filter:disabled {
+  display: none;
+}
+
+.url-list {
+  list-style-type: none;
+}
+
+.url-item {
+  display: flex;
+  align-items: center;
+  font-family: 'Lekton', sans-serif;
+  color: white;
+  width: 80%;
+  margin: auto;
+}
+
+.url-title {
+  font-size: 30px;
+  flex: 1.5;
+}
+
+.shortened-link {
+  flex: .5;
+  text-decoration: none;
+  color: white;
+  transition: .25s;
+  font-size: 20px;
+  background-color: #ffffff;
+  color: #34495e;
+}
+
+.shortened-link:hover {
+  background-color: #f1c40f;
+  color: black;
+}
+
+.counter {
+  flex: 1;
+  font-size: 30px;
+  text-align: center;
+}
