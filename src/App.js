@@ -9,7 +9,8 @@ class App extends Component {
       urlInput: null,
       urls: null,
       hasBeenSortedByDate: false,
-      hasBeenSortedByClicks: false
+      hasBeenSortedByClicks: false,
+      errorMessage: null
     }
   }
 
@@ -31,6 +32,9 @@ class App extends Component {
   }
 
   postUrls(title, url) {
+    const { urls } = this.state;
+    if (urls.map((url) => url.longUrl)[0]===url) { return this.setState({ errorMessage: 'That url already exists, sorry.'})}
+    else { this.setState({ errorMessage: null })}
     axios.post('/urls',  {title: title, url: url})
     .then((response) => {
       console.log('response received, hooray!')
@@ -81,7 +85,7 @@ class App extends Component {
   }
 
   render() {
-    const { urls, urlInput, titleInput } = this.state;
+    const { urls, urlInput, titleInput, errorMessage } = this.state;
     return (
       <div className="App">
         <form className="url-form" onSubmit={(e) => this.postUrls(titleInput, urlInput)}>
@@ -91,6 +95,7 @@ class App extends Component {
             submit
           </button>
         </form>
+        { errorMessage ? <h1>{errorMessage}</h1> : null }
         <ul className="url-list">
         <section className="sort-button-container">
           <button className="sort-by-clicks" onClick={e=> this.sortByClick()}>Sort by clicks</button>

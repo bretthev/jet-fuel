@@ -27,11 +27,12 @@ router.get('/:shortUrl', (request, response) => {
 
 router.post('/', (request, response) => {
   const longUrl = request.body.url;
-  let dateString = Date.now().toString()
+  if (app.locals.urls.filter((url) => longUrl===url.longUrl)[0]) { response.status(201).send('That URL already exists.') }
+  const dateString = Date.now().toString()
   const urlId = crc.crc24(dateString).toString(16)
   const shortUrl = crc.crc24(longUrl).toString(16)
+
   app.locals.urls.push({id: urlId, title: request.body.title, longUrl: longUrl, shortUrl: shortUrl, counter: 0, dateAdded: new Date().toDateString(), unix: Date.now() })
-  console.log(app.locals.urls)
   response.status(201).send('Post received')
 })
 
