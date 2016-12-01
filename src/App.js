@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import './app.css';
 
 class App extends Component {
   constructor() {
@@ -10,7 +11,6 @@ class App extends Component {
       urls: null,
       hasBeenSortedByDate: false,
       hasBeenSortedByClicks: false,
-      errorMessage: null,
       filterInput: ''
     }
   }
@@ -39,7 +39,7 @@ class App extends Component {
 
   postUrls(title, url) {
     const { urls } = this.state;
-    if (urls.map((url) => url.longUrl)[0]===url) { return this.setState({ errorMessage: 'That url already exists, sorry.'})}
+    if (urls.map((url) => url.longUrl)[0]===url) { return alert(`You've already added that URL.`)}
     else { this.setState({ errorMessage: null })}
     axios.post('/urls',  {title: title, url: url})
     .then((response) => {
@@ -63,13 +63,13 @@ class App extends Component {
     return filteredUrls.map((url) =>{
       const shortenedLink = "http://localhost:3001/urls/" + url.shortUrl
       return (
-        <li key={url.id}>
-          <h1>{url.title}</h1>
-          <a href={shortenedLink}>
+        <li className="url-item" key={url.id}>
+          <h2 className="url-title">{url.title}</h2>
+          <a href={shortenedLink} className="shortened-link">
             {url.shortUrl}
           </a>
-          {url.counter}
-          {url.dateAdded}
+          <h2 className="counter">{url.counter}</h2>
+          <h3 className="url-date">{url.dateAdded}</h3>
         </li>
         )
       }
@@ -94,24 +94,29 @@ class App extends Component {
 
   render() {
     const { urls, urlInput, titleInput, errorMessage } = this.state;
+    let areFiltersDisabled;
+    urls && urls.length > 1 ? areFiltersDisabled = false : areFiltersDisabled = true;
+    let isSubmitButtonDisabled;
+    urlInput && titleInput ? isSubmitButtonDisabled=false : isSubmitButtonDisabled=true;
+
     return (
       <div className="App">
+        <h1 className="app-title">Lazy Links</h1>
         <form className="url-form" onSubmit={(e) => this.postUrls(titleInput, urlInput)}>
-          <input className="title-input" onChange={e => this.getTitleInput(e)}/>
-          <input className="url-input" onChange={e => this.getUrlInput(e)}/>
-          <button className="url-submit-button">
+          <input className="title-input input" placeholder="Link Title"onChange={e => this.getTitleInput(e)}/>
+          <input className="url-input input" placeholder="Full Link" onChange={e => this.getUrlInput(e)}/>
+          <button className="url-submit-button input" disabled={isSubmitButtonDisabled}>
             submit
           </button>
-          <br />
-          <p>Search Filter: </p><input className="search-filter" onChange={e => this.getFilterInput(e)}/>
         </form>
-        { errorMessage ? <h1>{errorMessage}</h1> : null }
-        <ul className="url-list">
-        <section className="sort-button-container">
-          <button className="sort-by-clicks" onClick={e=> this.sortByClick()}>Sort by clicks</button>
-          <button className="sort-by-date"  onClick={e=> this.sortByDate()}>Sort by date</button>
+
+        <section className="sort-container">
+          <button className="sort-button" disabled={areFiltersDisabled} onClick={e=> this.sortByClick()}>Sort by clicks</button>
+          <button className="sort-button"  disabled={areFiltersDisabled} onClick={e=> this.sortByDate()}>Sort by date</button>
+          <input className="search-filter" placeholder="search-links" disabled={areFiltersDisabled} onChange={e => this.getFilterInput(e)}/>
         </section>
-        { urls ? this.displayUrls() : null}
+        <ul className="url-list">
+          { urls ? this.displayUrls() : null}
         </ul>
       </div>
     );
