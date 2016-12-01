@@ -111,8 +111,8 @@ class App extends Component {
         </form>
 
         <section className="sort-container">
-          <button className="sort-button" disabled={areFiltersDisabled} onClick={e=> this.sortByClick()}>Sort by clicks</button>
-          <button className="sort-button"  disabled={areFiltersDisabled} onClick={e=> this.sortByDate()}>Sort by date</button>
+          <button className="sort-button sort-by-click" disabled={areFiltersDisabled} onClick={e=> this.sortByClick()}>Sort by clicks</button>
+          <button className="sort-button sort-by-date"  disabled={areFiltersDisabled} onClick={e=> this.sortByDate()}>Sort by date</button>
           <input className="search-filter" placeholder="search-links" disabled={areFiltersDisabled} onChange={e => this.getFilterInput(e)}/>
         </section>
         <ul className="url-list">

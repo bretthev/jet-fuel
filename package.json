@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "enzyme": "^2.6.0",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "react-scripts": "0.7.0"
+    "react-addons-test-utils": "^15.4.1",
+    "react-scripts": "0.7.0",
+    "supertest": "^2.0.1"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -19,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "server-test": "mocha",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001"
