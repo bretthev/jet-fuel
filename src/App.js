@@ -10,7 +10,8 @@ class App extends Component {
       urls: null,
       hasBeenSortedByDate: false,
       hasBeenSortedByClicks: false,
-      errorMessage: null
+      errorMessage: null,
+      filterInput: ''
     }
   }
 
@@ -22,6 +23,11 @@ class App extends Component {
   getUrlInput(e) {
     e.preventDefault();
     this.setState({ urlInput: e.target.value })
+  }
+
+  getFilterInput(e) {
+    e.preventDefault();
+    this.setState({ filterInput: e.target.value })
   }
 
   getUrls() {
@@ -50,10 +56,12 @@ class App extends Component {
 
 
   displayUrls() {
-    const { urls } = this.state;
-    return urls.map((url) =>{
+    const { urls, filterInput } = this.state;
+    const filteredUrls = urls.filter(url => url.title.toLowerCase().indexOf(filterInput.toLowerCase()) !== -1);
+
+
+    return filteredUrls.map((url) =>{
       const shortenedLink = "http://localhost:3001/urls/" + url.shortUrl
-      console.log(shortenedLink)
       return (
         <li key={url.id}>
           <h1>{url.title}</h1>
@@ -89,11 +97,13 @@ class App extends Component {
     return (
       <div className="App">
         <form className="url-form" onSubmit={(e) => this.postUrls(titleInput, urlInput)}>
-          <input className="url-input" onChange={e => this.getTitleInput(e)}/>
+          <input className="title-input" onChange={e => this.getTitleInput(e)}/>
           <input className="url-input" onChange={e => this.getUrlInput(e)}/>
           <button className="url-submit-button">
             submit
           </button>
+          <br />
+          <p>Search Filter: </p><input className="search-filter" onChange={e => this.getFilterInput(e)}/>
         </form>
         { errorMessage ? <h1>{errorMessage}</h1> : null }
         <ul className="url-list">
